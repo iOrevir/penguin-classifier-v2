@@ -1,0 +1,369 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
+    <title>PenguinClassifier</title>
+</head>
+<body class="grey lighten-3"">
+
+    <!-- NAVBAR  -->
+    <nav class="z-depth-0 grey lighten-4">
+        <div class="nav-wrapper container">
+        <a href="#" class="brand-logo">
+            <img src="img/penguin.svg" style="width: 40px; margin-top: 10px;">
+        </a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li class="logged-in" style="display:none;">
+                <a href="#" class="grey-text modal-trigger" data-target="modal-account">Account</a>
+            </li>
+            <li class="logged-in" style="display:none;">
+                <a href="#" class="grey-text" id="logout">Logout</a>
+            </li>
+            <!-- //TODO change / delete -->
+            <!-- <li class="logged-in">
+                <a href="#" class="grey-text modal-trigger" data-target="modal-create">Create Guide</a>
+            </li> -->
+            <li class="logged-out" style="display:none;">
+                <a href="#" class="grey-text modal-trigger" data-target="modal-login">Login</a>
+            </li>
+            <li class="logged-out" style="display:none;">
+                <a href="#" class="grey-text modal-trigger" data-target="modal-signup">Sign up</a>
+            </li>
+            </span>
+        </ul>
+        </div>
+    </nav>
+
+    <!-- SIGN UP MODAL  -->
+    <div id="modal-signup" class="modal">
+        <div class="modal-content">
+        <h4>Sign up</h4><br />
+        <form id="signup-form">
+            <div class="input-field">
+            <input type="email" id="signup-email" required />
+            <label for="signup-email">Email address</label>
+            </div>
+            <div class="input-field">
+            <input type="password" id="signup-password" required />
+            <label for="signup-password">Choose password</label>
+            </div>
+            <button class="btn yellow darken-2 z-depth-0">Sign up</button>
+        </form>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL  -->
+    <div id="modal-login" class="modal">
+        <div class="modal-content">
+        <h4>Login</h4><br />
+        <form id="login-form">
+            <div class="input-field">
+            <input type="email" id="login-email" required />
+            <label for="login-email">Email address</label>
+            </div>
+            <div class="input-field">
+            <input type="password" id="login-password" required />
+            <label for="login-password">Your password</label>
+            </div>
+            <button class="btn yellow darken-2 z-depth-0">Login</button>
+        </form>
+        </div>
+    </div>
+
+    <!-- ACCOUNT MODAL  -->
+    <div id="modal-account" class="modal">
+        <div class="modal-content center-align">
+        <h4>Account details</h4><br />
+        <div class="account-details"></div>
+        </div>
+    </div>
+
+    <!--    CREATE GUIDE MODAL  //TODO change / delete  -->
+    <!--   <div id="modal-create" class="modal">
+        <div class="modal-content">
+        <h4>Create Guide</h4><br />
+        <form id="create-form">
+            <div class="input-field">
+            <input type="text" id="title" required>
+            <label for="title">Guide Title</label>
+            </div>
+            <div class="input-field">
+            <textarea id="content" class="materialize-textarea" required></textarea>
+            <label for="content">Guide Content</label>
+            </div>
+            <button class="btn yellow darken-2 z-depth-0">Create</button>
+        </form>
+        </div>
+    </div> -->
+
+    <!-- GUIDE LIST //TODO change / delete  -->
+    <!--   <div class="container" style="margin-top: 40px;">
+        <ul class="collapsible z-depth-0 guides" style="border: none;">
+        <li>
+            <div class="collapsible-header grey lighten-4">Guide title</div>
+            <div class="collapsible-body white">Lorem ipsum dolor sit amet.</div>
+        </li>
+        <li>
+            <div class="collapsible-header grey lighten-4">Guide title</div>
+            <div class="collapsible-body white"><span>Lorem ipsum dolor sit amet.</span></div>
+        </li>
+        <li>
+            <div class="collapsible-header grey lighten-4">Guide title</div>
+            <div class="collapsible-body white"><span>Lorem ipsum dolor sit amet.</span></div>
+        </li>
+        <li>
+            <div class="collapsible-header grey lighten-4">Guide title</div>
+            <div class="collapsible-body white"><span>Lorem ipsum dolor sit amet.</span></div>
+        </li>
+        </ul>
+    </div> -->
+
+<!-- code for the selection and model -->
+    <div>
+        <div id='PenguinClassifier' class='center' style="display:none;">
+            <div class='title'>Classify Penguin Images 🐧</div>
+            <p>
+            Use images of <strong>African</strong> Penguins, <strong>Northern rockhopper</strong> Penguins, <strong>King</strong> Penguins, 
+            <strong>Adélie</strong> Penguins, <strong>Fairy</strong> Penguins, <strong>Yellow-eyed</strong> Penguins, <strong>Chinstrap</strong> Penguins,
+                and <strong>Magellanic</strong> Penguins!
+            </p>
+            <div class='content'>
+                <div class="hide">
+                    <input id='file-input'
+                            class="hide"
+                            type='file'
+                            name='file'
+                            accept='image/*'
+                            onchange='showPicked(this)'>
+                </div>
+            <a class="waves-effect waves-light btn" onclick='showPicker()'>Select Image</a>
+            <!-- <button class='choose-file-button' type='button' onclick='showPicker()'>Select Image</button> -->
+                <div class='upload-label'>
+                <label id='upload-label'>No file chosen</label>
+                </div>
+                <div>
+                <img id='image-picked' class='no-display' alt='Chosen Image' height='200'>
+                </div>
+                <div class='analyze'>
+                    <button id='analyze-button' class="btn waves-effect waves-light" type="submit" name="analyze-button" onclick='analyze()'>Analyze
+                            <i class="material-icons right">send</i>
+                            </button>
+                    <!-- <button id='analyze-button' class='analyze-button' type='button' onclick='analyze()'>Analyze</button> -->
+                </div>
+                <div class='result-label'>
+                <label id='result-label'></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code for Stripe payment -->
+    <div style="margin: auto; max-width: 500px; padding: 20px; text-align: center;">
+        <form id="form">
+            <button id="checkout">Use Checkout</button>
+            <div id="payment-request-button">
+                <!-- Payment button gets injected here -->
+            </div>
+            <div>Pay with card</div>
+            <div id="card-element">
+                <!-- Stripe card inputs get injected here -->
+            </div>
+            <button type="submit">Donate $5 USD</button>
+            <div id="error" style="color: #e25950;"></div>
+        </form>
+
+        <div id="processing" style="display: none;">processing...</div>
+        <div id="thanks" style="display: none;">Thanks for your donation!</div>
+    </div>
+
+    <!-- This script used for the Payment Request and Card Element methods -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- This script used for the Checkout method -->
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+
+    <script>
+        // STRIPE PUBLISHABLE KEY
+        const STRIPE_PUBLIC_KEY = 'pk_test_cnCTn7Tz0EK4Vh5rzBOThaNA0080kleUFr';
+        // FIREBASE FUNCTIONS URL
+        const FIREBASE_FUNCTION = 'https://classifier-a795c.cloudfunctions.net/charge/';
+        const stripe = Stripe(STRIPE_PUBLIC_KEY);
+        const elements = stripe.elements();
+        const charge_amount = 500;
+        const charge_currency = 'usd';
+        // Store the elements used
+        const elForm = document.getElementById('form');
+        const elCheckout = document.getElementById('checkout');
+        const elPaymentButton = document.getElementById('payment-request-button');
+        const elCard = document.getElementById('card-element');
+        const elError = document.getElementById('error');
+        const elProcessing = document.getElementById('processing');
+        const elThanks = document.getElementById('thanks');
+        addPaymentRequestMethod();
+        addCardMethod();
+        addCheckoutMethod();
+        function addPaymentRequestMethod() {
+            const paymentRequest = stripe.paymentRequest({
+                country: 'US',
+                currency: charge_currency,
+                total: {
+                    label: 'Total',
+                    amount: charge_amount,
+                }
+            });
+            const paymentRequestButton = elements.create('paymentRequestButton', {
+                paymentRequest,
+                style: {
+                    paymentRequestButton: {
+                        type: 'donate'
+                    }
+                }
+            });
+            // Only mount button if browser supports payment requests
+            (async () => {
+                const result = await paymentRequest.canMakePayment();
+                if (result) paymentRequestButton.mount(elPaymentButton);
+                else elPaymentButton.style.display = 'none';
+            })();
+            paymentRequest.on('token', async result => {
+                // Pass the received token to our Firebase function
+                let res = await charge(result.token, charge_amount, charge_currency);
+                if (res.body.error) {
+                    result.complete('fail');
+                } else {
+                    // Card successfully charged
+                    result.complete('success');
+                    elForm.style.display = 'none';
+                    elThanks.style.display = 'block';
+                }
+            });
+        }
+        function addCardMethod() {
+            const card = elements.create('card');
+            card.mount(elCard);
+            // Create flags to help prevent duplicate submissions
+            let isSubmitting, isSuccess;
+            // Handle validation errors from the card element
+            card.addEventListener('change', e => {
+                if (e.error) {
+                    elError.textContent = e.error.message;
+                } else {
+                    elError.textContent = '';
+                }
+            });
+            elForm.addEventListener('submit', async e => {
+                e.preventDefault();
+                if (isSubmitting) return;
+                isSubmitting = true;
+                elForm.style.display = 'none';
+                elProcessing.style.display = 'block';
+                let result = await stripe.createToken(card);
+                // Error in receiving token
+                if (result.error) return elError.textContent = result.error.message;
+                // Pass the received token to our Firebase function
+                let res = await charge(result.token, charge_amount, charge_currency);
+                if (res.body.error) return elError.textContent = res.body.error;
+                // Card successfully charged
+                card.clear();
+                isSuccess = true;
+                isSubmitting = false;
+                elProcessing.style.display = 'none';
+                // Either display thanks or re-display form if there was an error
+                if (isSuccess) {
+                    elThanks.style.display = 'block';
+                } else {
+                    elForm.style.display = 'block';
+                }
+            });
+        }
+        function addCheckoutMethod() {
+            const handler = StripeCheckout.configure({
+                key: STRIPE_PUBLIC_KEY,
+                locale: 'auto',
+                token: async token => {
+                    // Pass the received token to our Firebase function
+                    let res = await charge(token, charge_amount, charge_currency);
+                    if (res.body.error) return elError.textContent = res.body.error;
+                    // Card successfully charged
+                    elForm.style.display = 'none';
+                    elThanks.style.display = 'block';
+                }
+            });
+            elCheckout.addEventListener('click', e => {
+                e.preventDefault();
+                handler.open({
+                    name: 'Firebase Example',
+                    amount: charge_amount,
+                    currency: charge_currency,
+                });
+            });
+            // Close Checkout on page navigation
+            window.addEventListener('popstate', () => handler.close());
+        }
+        // Function used by all three methods to send the charge data to your Firebase function
+        async function charge(token, amount, currency) {
+            const res = await fetch(FIREBASE_FUNCTION, {
+                method: 'POST',
+                body: JSON.stringify({
+                    token,
+                    charge: {
+                        amount,
+                        currency,
+                    },
+                }),
+            });
+            const data = await res.json();
+            data.body = JSON.parse(data.body);
+            return data;
+        }
+    </script>
+
+    <!-- Ask to signup or login -->
+    <div id='ask-sign' class="title">Please signup or login</div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+
+    <!-- Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCfEkyhp3LrTGsagrqMnxi8LM2NncEQEIk",
+        authDomain: "classifier-a795c.firebaseapp.com",
+        databaseURL: "https://classifier-a795c.firebaseio.com",
+        projectId: "classifier-a795c",
+        storageBucket: "classifier-a795c.appspot.com",
+        messagingSenderId: "489485796272",
+        appId: "1:489485796272:web:adb57579a3d7b76f390c75",
+        measurementId: "G-JHX70HKTMJ"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    // make auth and firestore references
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // update firestore settings
+    //db.settings({ timestampsInSnapshots: true});
+    </script>
+
+    <!-- Compiled and minified JavaScript  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/index.js"></script>
+    <script src="scripts/client.js"></script>
+    <script src="scripts/db.js"></script>
+    <script src="stripe-firebase.js"></script>
+</body>
+</html>
